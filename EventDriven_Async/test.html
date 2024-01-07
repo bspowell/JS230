@@ -4,43 +4,54 @@
   <meta charset="UTF-8">
   <title>Color Changing Divs</title>
   <style>
-    #message {
-      padding: .5em .8em;
-      background-color: lightyellow;
-      display: inline-block;
+    #store {
+      border: solid 1px black;
+      padding: 0 1em;
+      float: left;
+      h1 {
+        font-size: 1.2em;
+      }
+      
+      h2 {
+        font-size: 1em;
+      }
+      form {
+        button {
+          margin-bottom: 1em;
+        }
+      }
     }
   </style>
 </head>
 <body>
 
-  <button>One</button>
-  <button>Two</button>
-  <button>Three</button>
-  <button>Four</button>
-  
-  <div>
-    <p>
-      <button>Five</button>
-      <button>Six</button>
-      <button>Seven</button>
-      <button>Eight</button>
-    </p>
-  </div>
-  
-  <div id="message"></div>
-  
+  <h1>Existing Page</h1>
+
+  <div id="store"></div>
 <script>
-  function clickHandler(event) {
-    let message = document.getElementById('message');
-    message.textContent = `${event.target.textContent} was clicked!`;
-  }
-
   document.addEventListener('DOMContentLoaded', () => {
-    let buttons = document.querySelectorAll('button');
+    let store = document.getElementById('store');
+    
+    let request = new XMLHttpRequest();
+    request.open('GET', 'https://ls-230-web-store-demo.herokuapp.com/products');
 
-    for (let index = 0; index < buttons.length; index += 1) {
-      buttons[index].addEventListener('click', clickHandler);
-    }
+    request.addEventListener('load', event => store.innerHTML = request.response);
+    request.send();
+    
+    store.addEventListener('click', event => {
+      let target = event.target;
+      if (target.tagName !== 'A') {
+        return;
+      }
+      
+      event.preventDefault();
+      
+      let request = new XMLHttpRequest();
+      request.open('GET', 'https://ls-230-web-store-demo.herokuapp.com' + target.getAttribute('href'));
+
+      request.addEventListener('load', event => store.innerHTML = request.response);
+      request.send();    
+    });
   });
 </script>
 

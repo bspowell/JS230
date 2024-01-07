@@ -19,3 +19,6 @@ function loadData() {
 
 const primaryOperation = flakyService();
 const fallbackOperation = loadData();
+
+Promise.any([primaryOperation, fallbackOperation])
+  .then()
