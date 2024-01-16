@@ -69,8 +69,15 @@ a.favorite {
 }
 
 #slides figure + figure {
-  display: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
+
+#slides .show {
+  opacity: 1;
+}
+
+
 
 #slides img {
   display: block;
