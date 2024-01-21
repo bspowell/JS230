@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>Bold Element + Custom</title>
+    <style>
+      .highlight {
+        border: 1px dotted black;
+      }
+
+      header li {
+        display: inline-block;
+      }
+
+      header ul {
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        let list = document.querySelector('ul');
+        let articles = document.querySelectorAll('main article')
+        // console.log(links)
+        list.addEventListener('click', (event) => {
+          let articleId = event.target.getAttribute('href')
+          let articleEle = document.querySelector(`main ${articleId}`)
+          articles.forEach(article => {
+            console.log(article)
+            if (article.classList.contains('highlight')) { article.classList.toggle('highlight')}
+          })
+          articleEle.classList.toggle('highlight')
+        })
+      })
+    </script>
+    <header>
+      <h1>Nav</h1>
+      <ul> 
+        <li><a href="#article-1">Article 1</a></li>
+        <li><a href="#article-2">Article 2</a></li>
+        <li><a href="#article-3">Article 3</a></li>    
+        <li><a href="#article-4">Article 4</a></li>
+      </ul>
+    </header>
+
+    <main>
+      <h1>Articles</h1>
+      <article id="article-1">
+        <h2>Article 1</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras varius pulvinar aliquam. Suspendisse sed metus vel diam pulvinar lacinia.</p>
+      </article>
+      <article id="article-2">
+        <h2>Article 2</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras varius pulvinar aliquam. Suspendisse sed metus vel diam pulvinar lacinia.</p>
+      </article>
+      <article id="article-3">
+        <h2>Article 3</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras varius pulvinar aliquam. Suspendisse sed metus vel diam pulvinar lacinia.</p>
+      </article>
+      <article id="article-4">
+        <h2>Article 4</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras varius pulvinar aliquam. Suspendisse sed metus vel diam pulvinar lacinia.</p>
+      </article>
+    </main>
+  </body>
+  <script>
+    
+  </script>
+</html>
+
+

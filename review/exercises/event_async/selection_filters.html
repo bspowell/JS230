@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>Bold Element + Custom</title>
+  </head>
+  <body>
+    <form id="selection-filters" method="post" action="#">
+      <select id="animal-classifications">
+        <option value="Classifications" selected>Classifications</option>
+        <option value="Vertebrate">Vertebrate</option>
+        <option value="Warm-blooded">Warm-blooded</option>
+        <option value="Cold-blooded">Cold-blooded</option>
+        <option value="Mammal">Mammal</option>
+        <option value="Bird">Bird</option>
+      </select>
+      <select id="animals">
+        <option value="Animals" selected>Animals</option>
+        <option value="Bear">Bear</option>
+        <option value="Turtle">Turtle</option>
+        <option value="Whale">Whale</option>
+        <option value="Salmon">Salmon</option>
+        <option value="Ostrich">Ostrich</option>    
+      </select>
+      <button id="clear">Clear</button>  
+    </form>
+  </body>
+  <script>
+
+    let classification = { 
+      'Vertebrate': ['Bear', 'Turtle', 'Whale', 'Salmon', 'Ostrich'],
+      'Warm-blooded': ['Bear', 'Whale', 'Ostrich'],
+      'Cold-blooded': ['Salmon', 'Turtle'],
+      'Mammal': ['Bear', 'Whale'],
+      'Bird': ['Ostrich']
+    }
+    let animals = {
+      Bear: ['Vertebrate', 'Warm-blooded', 'Mammal'],
+      'Turtle': ['Vertebrate', 'Cold-blooded'],
+      Whale: ['Vertebrate', 'Warm-blooded', 'Mammal'],
+      Salmon: ['Vertebrate', 'Cold-blooded'],
+      Ostrich: ['Vertebrate', 'Warm-blooded', 'Bird'],
+      Animals: ['Classifications', 'Vertebrate', 'Warm-blooded', 'Cold-blooded', 'Mammal', 'Bird'],
+   } 
+
+    function changeStyle(option, selection) {
+
+    }
+    function filterAnimals(optionSelected, selectToChange, object) {
+      // console.log(optionSelected)
+      console.log(object[optionSelected])
+      // console.log(object)
+
+      for (let i = 0; i < selectToChange.options.length; i++){
+        if (!object[optionSelected].includes(selectToChange.options[i].value)) {
+          selectToChange.options[i].style.display = 'none';
+        }
+      } 
+    }
+    function resetStyle(dropdown) {
+      for (var i = 0; i < dropdown.options.length; i++) {
+        dropdown.options[i].style = {};
+      }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      let selectOne = document.getElementById('animal-classifications')
+      let selectTwo = document.getElementById('animals')
+      let button = document.getElementById('clear');
+      let optionSelected;
+    
+      selectOne.addEventListener('change', (event) => {
+        optionSelected = event.target.value
+        filterAnimals(optionSelected, selectTwo, classification)
+      })
+
+      selectTwo.addEventListener('change', (event) => {
+        optionSelected = event.target.value
+        filterAnimals(optionSelected, selectOne, animals)
+      })
+
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        resetStyle(selectOne);
+        resetStyle(selectTwo);
+      })
+    })
+  </script>
+</html>
+
