@@ -42,6 +42,83 @@
         <div id="green">Green</div>
       </div>
     </div>
-    <script src="test.js"></script>
+    <!-- <script src="test.js"></script> -->
+    <script>
+      const divRed = document.querySelector('#red');
+      const divBlue = document.querySelector('#blue');
+      const divOrange = document.querySelector('#orange');
+      const divGreen = document.querySelector('#green');
+
+      const tracker = (() => {
+        const events = [];
+        return {
+          list() {
+            return events.slice();
+          },
+          elements() {
+            return this.list().map(({target}) => target);
+          },
+          add(event) {
+            events.push(event);
+          },
+          clear() {
+            events.length = 0;
+            return events.length;
+          },
+        };
+      })();
+
+      function track(callback) {
+        function isEventTracked(events, event) {
+          return events.includes(event);
+        }
+        console.log(event)
+        return event => {
+          if (!isEventTracked(tracker.list(), event)) {
+            tracker.add(event);
+          }
+
+          callback(event);
+        };
+      }
+
+      divRed.addEventListener('click', track(event => {
+        document.body.style.background = 'red';
+      }));
+
+      divBlue.addEventListener('click', track(event => {
+        event.stopPropagation();
+        document.body.style.background = 'blue';
+      }));
+
+      divOrange.addEventListener('click', track(event => {
+        document.body.style.background = 'orange';
+      }));
+
+      divGreen.addEventListener('click', track(event => {
+        document.body.style.background = 'green';
+      }));
+    </script>
+  
   </body>
+  <!-- // querySelectors for divRed, divBlue, divOrange, divGreen
+  // track() function that takes a callback and returns a new function
+  // tacker object, that has methods:
+    // list()
+      // returns a copy array of click events
+      // if not a click event, can't add it
+      // eg. tracker.list()[0] = 'abc'
+             tracker.list().length
+             = 0
+    // elements()
+      // returns array of element names and their id - eg. [div#blue, div#red, div#orange, div#green]
+      // eg. tracker.elements()[0] === document.querySelector('#blue') // true
+    // clear()
+      // returns 0 and clears events in list() and elements
+
+    // new function records the event if it hasn't been recorded before
+    // executes original callback -->
+
+  
+    
 </html>

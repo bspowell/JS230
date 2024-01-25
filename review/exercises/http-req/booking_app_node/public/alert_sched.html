@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>Bold Element + Custom</title>
+    <style>
+      input {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <form action="submit" method="post">
+        <lablel for="email">Email:</lablel>
+        <input type="text" id="email" name="email"></input>
+        <lablel for="name">Name:</lablel>
+        <input type="text" id="name" name="name"></input>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </body>
+  <script>
+    function retreiveSchedules(url) {
+      let available = {};
+
+      let request = new XMLHttpRequest();
+      request.timeout = 5000;
+      
+      request.open('GET', url)
+      request.responseType = 'json'
+
+      request.addEventListener('load', ()=> {
+        let schedules = request.response;
+        
+        if (schedules.length === 0) {
+            alert('no schedules available')
+            return;
+        };
+    
+        schedules.forEach(schedule => {
+            available[schedule.staff_id] ? available[schedule.staff_id] += 1 : available[schedule.staff_id] = 1 
+        })
+    
+        let msg = Object.keys(available).map(staffid => {
+            return `staff ${staffid}: ${available[staffid]}`
+        }).join("\n")
+        alert(msg)
+            
+      })
+    
+      request.addEventListener("timeout", (event) => {
+          alert('Please try again.');
+          request.abort();
+      });
+      request.send();
+
+    }
+
+    retreiveSchedules('/api/schedules')
+
+  </script>
+</html>
+

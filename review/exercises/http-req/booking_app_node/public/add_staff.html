@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>Bold Element + Custom</title>
+    <style>
+      input {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <form action="/api/staff_members" method="post">
+        <lablel for="email">Email:</lablel>
+        <input type="text" id="email" name="email"></input>
+        <lablel for="name">Name:</lablel>
+        <input type="text" id="name" name="name"></input>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </body>
+  <script>
+    let form = document.querySelector('form')
+		
+
+    form.addEventListener('submit', (e)=> {
+      e.preventDefault();
+			let request = new XMLHttpRequest();
+      let data = new FormData(form)
+		
+			request.open(form.method, form.action)
+			request.send(data)
+
+			request.addEventListener('load', ()=> {
+				if (request.status === 201) {
+					let responseData = JSON.parse(request.response)
+					alert('Staff successfully created with id: ' + responseData.id)
+					form.reset();
+					return;
+				} else if (request.status === 400) {
+					alert(request.responseText)
+				}
+			})
+    })
+  </script>
+</html>
+

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <style>
+      body {
+        background-color: #52BE43;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+      }
+      p {
+        display: block;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+      }
+      input {
+        width: 40%;
+        padding: 8px;
+      }
+
+      .focused {
+
+      }
+
+      #form-container {
+        width: 800px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+      }
+
+      #signup {
+        color: white;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h2 id="signup">Sign up Form</h2>
+    </div>
+    <div id="form-container">
+      <form action="submit" method="post">
+        <label for="fname">First Name:</label>
+        <p><input type="text" id="fname" name="fname" required></p>
+  
+        <label for="lname">Last Name:</label>
+        <p><input type="text" id="lname" name="lname" required></p>
+  
+        <label for="email">Email:</label>
+        <p><input type="text" id="email" name="Email" required></p>
+  
+        <label for="password">Password:</label>
+        <p><input type="text" id="password" name="password" required></p>
+  
+        <label for="phone">Phone Number:</label>
+        <p><input type="text" id="phone" name="phone"></p>
+  
+        <p><button type="submit">Sign Up</button></p>
+      </form>
+    </div>
+
+  </body>
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=> {
+      let form = document.querySelector('form')
+      // let lastClick;
+
+      // function nameIsValid() {
+      //   // if id = fname or lname, check if text is greater than 0
+      //   // if phone, then check if style is 111-222-3333
+
+      //   if (lastClick.id === 'fname' || lastClick.id === 'lname') {
+      //     if (lastClick.value.length < 1) { 
+      //       lastClick.classList.add('invalid')
+      //     }
+      //     lastClick.classList.remove('invalid')
+      //   }
+      // }
+      // function emailIsValid() {
+      //   // if id = email, check pattern is .+@.+
+
+      //   let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      //   return emailRegex.test(lastClick.value);
+      // }
+
+      // document.body.addEventListener('click', (e) => {
+      //   if(e.target.tagName !== 'INPUT') {
+      //     if (lastClick.tagName === 'INPUT') {
+      //       nameIsValid()
+      //       emailIsValid()
+      //       phoneIsValid()
+      //     }
+      //   }
+      // })
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const phoneInput = document.getElementById('phone');
+        const emailInput = document.getElementById('email');
+        let validPhone = /^\d{3}-\d{3}-\d{4}$/
+        let validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+        if (!validPhone.test(phoneInput.value)) {
+          phoneInput.nextSibling = document.createElement('p').textContent = 'Invalid input'
+          e.preventDefault();
+        }
+        if (!validEmail.test(emailInput.value)) {
+          phoneInput.nextSibling = document.createElement('p').textContent = 'Invalid input'
+          e.preventDefault();
+        }
+      })
+    })
+  </script>
+</html>
