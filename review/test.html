@@ -2,42 +2,152 @@
 <html lang="en-US">
   <head>
     <title>On the River</title>
+    <style>
+      html, body {
+        padding: 25px 0;
+        margin: 0;
+        font: normal 16px Helvetica, Arial, sans-serif;
+        text-align: center;
+        color: #16997c;
+        background: #5bccb3;
+      }
+
+      main {
+        display: block;
+        max-width: 450px;
+        padding: 20px;
+        margin: 0 auto;
+        background: #ffffff;
+        box-sizing: border-box;
+      }
+
+      h1 {
+        color: #CC183E;
+      }
+
+      fieldset {
+        padding: 0 0 25px 0;
+        margin: 0;
+        border: none;
+      }
+      input[type="text"] {
+        width: 80px;
+        height: 50px;
+        padding: 5px;
+        margin: 0 0 20px 0;
+        font: normal 24px Georgia, Palatino, serif;
+        text-align: center;
+        border: 1px solid #cecece;
+        box-sizing: border-box;
+      }
+
+      input[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 15px 0;
+        font: normal 20px Helvetica, Arial, sans-serif;
+        color: #ffffff;
+        text-shadow: 1px 1px 5px rgba(80, 80, 80, .8);
+        border: 1px solid #91112C;
+        box-shadow: 0 0 1px 1px #780e24;
+        border-radius: 11px;
+        background: linear-gradient(to bottom, #CC183E 0%, #780E24 100%);
+      }
+
+      a { color: #cc183e; }
+    </style>
+
   </head>
   <body>
-    <h1>On the River</h1>
-    <p>A poem by Paul Laurence Dunbar</p>
+    <main>
+      <h1>Number Guessing Game</h1>
+      <p>Loading...</p>
+      <form action="" method="get">
+        <fieldset>
+          <input type="text" id="guess" maxlength="3" />
+          <input type="submit" value="Guess" />
+        </fieldset>
+      </form>
+      <a href="#">New game</a>
+    </main>
 
-    <p>
-      The sun is low,<br>
-      The waters flow,<br>
-      My boat is dancing to and fro.<br>
-      The eve is still,<br>
-      Yet from the hill<br>
-      The killdeer echoes loud and shrill.
-    </p>
-    <p>
-      The paddles plash,<br>
-      The wavelets dash,<br>
-      We see the summer lightning flash;<br>
-      While now and then,<br>
-      In marsh and fen<br>
-      Too muddy for the feet of men,
-    </p>
-    <p>
-      Where neither bird<br>
-      Nor beast has stirred,<br>
-      The spotted bullfrog's croak is heard.<br>
-      The wind is high,<br>
-      The grasses sigh,<br>
-      The sluggish stream goes sobbing by.
-    </p>
-    <p>
-      And far away<br>
-      The dying day<br>
-      Has cast its last effulgent ray;<br>
-      While on the land<br>
-      The shadows stand<br>
-      Proclaiming that the eve's at hand.
-    </p>
+    <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  let form = document.querySelector('form');
+  let input = document.querySelector('#guess');
+  let paragraph = document.querySelector('p');
+  let link = document.querySelector('a');  
+  let answer;
+  let guesses;
+
+  function newGame() {
+    answer = Math.floor(Math.random() * 100) + 1;
+    guesses = 0;
+    paragraph.textContent = 'Guess a number from 1 to 100';
+  }
+  
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+
+    let guess = parseInt(input.value, 10);
+    let message;
+
+    guesses += 1;
+    
+    if (guess === answer) {
+      message = `You guessed it! It took you ${guesses} guesses.`;
+    } else if (guess > answer) {
+      message = `My number is lower than ${guess}`;
+    } else {
+      message = `My number is higher than ${guess}`;
+    }
+    
+    paragraph.textContent = message;
+  });
+
+  link.addEventListener('click', event => {
+    event.preventDefault();
+    newGame();
+  });
+  
+  newGame();
+});
+      // document.addEventListener('DOMContentLoaded', () => {
+      //   let answer;
+      //   let input = document.getElementById('guess').value
+      //   let form = document.querySelector('form')
+      //   let messageEle = document.querySelector('main p')
+      //   let guesses;
+
+      //   form.addEventListener('submit', (e) => {
+      //     e.preventDefault();
+      //     let guess = parseInt(input, 10)
+      //     let message;
+      //     guesses += 1;
+
+      //     if (guess === answer) {
+      //       message = 'You guessed right! It took ' + guesses + ' guesses'
+      //     } else if (guess > answer) {
+      //       message = 'Answer is lower than ' + guess
+      //     } else {
+      //       message = 'Answer is higher than ' + guess
+      //     }
+      //     messageEle.value = message;
+      //   })
+
+      //   function newGame() {
+      //     answer = Math.floor(Math.random() * 100) + 1
+      //     messageEle = 'Guess a number from 1 to 100'
+      //     guesses = 0;
+      //   }
+
+      //   document.querySelector('a').addEventListener('click', (e) => {
+      //     e.preventDefault()
+      //     newGame();
+      //   })
+      //   newGame();
+      // });
+    </script>
   </body>
 </html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h1>Existing Page</h1>
+
+    <div id="store"></div>  
+  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      let store = document.getElementById("store");
+
+      let request = new XMLHttpRequest();
+      request.open("GET", "https://ls-230-web-store-demo.herokuapp.com/products");
+
+      request.addEventListener("load", event => (store.innerHTML = request.response));
+      request.send();
+
+      store.addEventListener("click", event => {
+        let target = event.target;
+        if (target.tagName !== "A") {
+          return;
+        }
+
+        event.preventDefault();
+
+        let request = new XMLHttpRequest();
+        request.open(
+          "GET",
+          "https://ls-230-web-store-demo.herokuapp.com" + target.getAttribute("href")
+        );
+
+        request.addEventListener("load", event => (store.innerHTML = request.response));
+        request.send();
+      });
+    });
+  </script>
+</html>
