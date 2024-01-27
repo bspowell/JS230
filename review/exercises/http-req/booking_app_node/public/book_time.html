@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>Book Time</title>
+    <style>
+      input, select {
+        display: inline-block;
+      }
+      .hidden {
+        display: none;
+      }
+      .add-student {
+        background-color: lightgray;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Schedules</h1>
+    <div class="schedule-div">
+      <div class="form">
+        <form action="/api/bookings" method="post">
+          <dl>
+            <dt>
+              <label for="id">Please select one schedule:</label>
+              <select class="schedules" name="id" required></select>
+            </dt>
+            <dt>
+              <label for="email">Email:</label>
+              <input type="text" id="email" name="email" pattern="\w+@\w+\.\w+" required ></input>
+            </dt>
+          </dl>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+    <div class="add-student hidden">
+      <h1>Create a Student</h1>
+      <form action="/api/bookings" method="post">
+        <dl>
+          <dt>
+            <label for="email">Email: </label>
+            <input type="text" id="email" name="email" pattern="\w+@\w+\.\w+" required ></input>
+          </dt>
+          <dt>
+            <label for="name">Name: </label>
+            <input type="text" id="text" name="text" required ></input>
+          </dt>
+          <dt>
+            <label for="booking-sequence">Booking Sequence: </label>
+            <input type="text" id="booking-sequence" name="booking-sequence" required ></input>
+          </dt>
+        </dl>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </body>
+  <script>
+    // Form populates with open schedules if student_email is null
+    // User selects schedule
+    // User inputs email 
+    // if email does not equal any of the student emails in database, create new form Email, Name, Booking Sequence()
+    
+    // let scheduler = {
+
+
+
+        // let xhr = new XMLHttpRequest()
+        // xhr.open('GET', '/api/staff_members')
+        // xhr.setRequestHeader('Content-Type', 'application/json')
+        // xhr.send()
+        // xhr.addEventListener('load', ()=> {
+        //   if (xhr.status === 200) {
+        //     let data = JSON.parse(xhr.response)
+        //     for(let staff of data) {
+        //       if(staff.id === id) { console.log(staff) }
+        //     }
+        //   } else {
+        //     alert('staff with that id not found')
+        //   }
+        // })
+      // },
+
+
+    // function getOpenSchedules() {
+    //   let xhr = new XMLHttpRequest()
+    //   xhr.open('GET', '/api/schedules')
+    //   xhr.setRequestHeader('Content-Type', 'application/json')
+
+    //   xhr.addEventListener('load', ()=> {
+    //     let data = JSON.parse(xhr.response)
+    //     if (xhr.status === 200) {
+    //       let data = JSON.parse(xhr.response)
+    //       this.addScheduleOptions(data)
+    //     } else {
+    //       console.log('error')
+    //     }
+    //   })
+    //   xhr.send()
+
+    // }
+
+    let staff;
+    let students;
+
+    function findStaff(id) {
+      for(let staffObj of staff) {
+        if(staffObj.id === id) { return staffObj }
+      }
+    }
+
+    function addScheduleOptions(scheduleData) {
+      let element = document.querySelector('.schedules')
+      scheduleData.forEach(schedule => {
+        let newOption = document.createElement('option')
+        let staffObj = findStaff(schedule.staff_id)
+        newOption.setAttribute('value', schedule.id )
+        newOption.textContent = `${staffObj.name} | ${schedule.date} | ${schedule.time}`
+        element.appendChild(newOption)
+      }) 
+    }
+
+    async function getOpenSchedules() {
+      try {
+        let response = await fetch('/api/schedules')
+        if (response.ok) {
+          console.log('getOpen OK')
+          let data = await response.json()
+          addScheduleOptions(data)
+        } else {
+          throw new Error('Error in getting schedules')
+        }
+      } catch (error) {
+        console.error(`Error: ${error}`)
+      }
+    }
+
+    async function getStaff() {
+      try {
+        let response = await fetch('/api/staff_members')
+        staff = await response.json()
+        console.log('Recevied Staff')
+      } catch(error) {
+        console.error(`Staff Error: ${error}`)
+      }
+    }
+
+    async function getStudents() {
+      try {
+        let response = await fetch('/api/students')
+        students = await response.json()
+        console.log('Recevied Students')
+      } catch(error) {
+        console.error(`Student Error: ${error}`)
+      }
+    }
+
+    function checkIfStudent(email) {
+      return students.some(studentObj => studentObj.email === email)
+    }
+
+    function getInputs(form) {
+      let formData = new FormData(form);
+      let bodyObj = {};
+
+      for ([key, value] of formData) {
+        bodyObj[key] = value
+      }
+
+      let jsonObj = JSON.stringify(bodyObj)
+
+      return {
+          method: form.method,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: jsonObj
+        }
+     }   
+
+
+    async function addStudent(form) {
+      try {
+        let formData = getInputs(form)
+        console.log(formData)
+        let response = await fetch(form.action, formData)
+        if (response.ok) {
+            alert('Student has been added!')
+            form.reset()
+        }
+          // } else {
+          //   throw new Error(response)
+          // }
+      } catch (error) {
+        console.error(`Error: ${error.message}`)
+        // if (error.message.includes('404')) {
+        //   const bookingSequence = error.message.match(/booking_sequence: (\d+)/);
+        // } 
+
+      }
+    }
+
+    function toggleForm() {
+      let form = document.querySelector('.add-student')
+      form.classList.toggle('hidden')
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      getStaff()
+      getStudents()
+      getOpenSchedules()
+
+      let form = document.querySelector('form')
+
+    
+      form.addEventListener('submit', (e)=> {
+        e.preventDefault()
+        let email = form.querySelector('input#email')
+        if (!checkIfStudent(email.value)) {
+          console.log('Not a student')
+          toggleForm()
+        }
+        addStudent(e.target)
+
+      })
+    })
+
+    
+    // let form = document.querySelector('form')
+		
+
+    // form.addEventListener('submit', (e)=> {
+    //   e.preventDefault();
+		// 	let request = new XMLHttpRequest();
+    //   let data = new FormData(form)
+		
+		// 	request.open(form.method, form.action)
+		// 	request.send(data)
+
+		// 	request.addEventListener('load', ()=> {
+		// 		if (request.status === 201) {
+		// 			let responseData = JSON.parse(request.response)
+		// 			alert('Staff successfully created with id: ' + responseData.id)
+		// 			form.reset();
+		// 			return;
+		// 		} else if (request.status === 400) {
+		// 			alert(request.responseText)
+		// 		}
+		// 	})
+    // })
+  </script>
+</html>
+

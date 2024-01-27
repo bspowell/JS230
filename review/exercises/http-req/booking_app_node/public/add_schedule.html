@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>Bold Element + Custom</title>
+    <style>
+      input, select {
+        display: block;
+      }
+
+      .form {
+        border-style: solid;
+        padding: 10px
+      }
+
+      div .title {
+        position: absolute;
+        transform: translateY(-110%);
+        background-color: white;
+        padding: 2px
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="schedule-button"> 
+      <button type='submit'>Add a new schedule</button>
+    </div>
+    <div class="schedule-div">
+      <p></p>
+      <div class="form">
+        <div class="title">Schedule <span id="sched-num">1</span></div>
+        <form action="/api/schedules" method="post">
+          <label for="name">Staff Name:</label>
+          <select class="staff_id" name="staff_id"></select>
+          <label for="data">Date:</label>
+          <input type="text" id="date" name="date" placeholder="mm-dd-yy" pattern="\d{2}-\d{2}-\d{2}" required></input>
+          <label for="time">Time:</label>
+          <input type="text" id="time" name="time" placeholder="hh:mm" pattern="\d{2}:\d{2}" required></input>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+    
+  </body>
+  <script>
+      let data;
+
+      async function getStaff() {
+        let response = await fetch("/api/staff_members")
+        data = await response.json()
+        populateStaff(data)
+      }
+
+      async function populateStaff(data) {
+        let element = document.querySelector('.staff_id')
+        data.forEach(staff => {
+          let newOption = document.createElement('option')
+          newOption.setAttribute('value', staff.id)
+          newOption.textContent = staff.name
+          element.appendChild(newOption)
+        }) 
+      }
+
+      function getInputs(form) {
+        let scheduleObj = {}
+        let formData = new FormData(form) 
+        for(let input of formData.entries()) {
+          scheduleObj[input[0]] = input[1]
+        }
+        let bodyObj = { schedules: [scheduleObj] }
+        let jsonObj = JSON.stringify(bodyObj)
+
+        return {
+          method: form.method,
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: jsonObj
+        }
+      }
+      async function submitForm(form) {
+        try {
+          let formInputs = getInputs(form)
+          let response = await fetch(form.action, formInputs)
+          if (response.ok) {
+            alert(response.statusText)
+            form.reset()
+          } else {
+            throw new Error('Server error')
+          }
+        } catch (error) {
+          alert('Error:', error)
+        }
+      }
+  
+    document.addEventListener('DOMContentLoaded', ()=> {
+      let schedule_button = document.querySelector('.schedule-button')
+
+      schedule_button.addEventListener('click', (event)=> {
+        event.preventDefault()
+        let schedule_divs = Array.from(document.querySelectorAll('.schedule-div'))
+        let last_div = schedule_divs[schedule_divs.length - 1]
+
+        let new_div = last_div.cloneNode(true)
+        let sched_num = new_div.querySelector('#sched-num')
+        sched_num.textContent = Number(sched_num.textContent) + 1
+        document.body.appendChild(new_div)
+      })
+
+      document.addEventListener('submit', (event) => {
+        event.preventDefault()
+        let form = event.target
+        submitForm(form)
+      })
+
+      getStaff()
+    })
+  </script>
+</html>
+
