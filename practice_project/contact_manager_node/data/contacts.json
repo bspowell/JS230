@@ -33,5 +33,12 @@
     "email": "jim@jim.com",
     "tags": "poop",
     "id": 5
+  },
+  {
+    "full_name": "bob",
+    "phone_number": "123",
+    "email": "bob@bob.com",
+    "tags": "friend, personal, family",
+    "id": 6
   }
 ]
