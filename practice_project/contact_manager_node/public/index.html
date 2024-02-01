@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="stylesheets/app.css" />
+  <script src="javascripts/controller.js"></script>
+  <script src="javascripts/jquery.js"></script>
+  <script src="javascripts/handlebars.js"></script>
+</head>
+<body>
+  <header>
+    <h1 class="center">Contact Manager</h1>
+  </header>
+  <section class="main-container">
+    <section class="add-contact-section">
+      <button type="button" class="add-contact-button">Add Contact</button>
+      <input type="text" id='search-bar' placeholder="Search">
+    </section>
+
+    <section class="list-contacts-section">
+    </section>
+    <button type="button" class="add-contact-button">Add Contact</button>
+
+    <section class="empty-section"></section>
+    <section class="contact-search-section-message"></section>
+  </section>
+
+  <section class="form-container" style="display: none;">
+    <h1>Create Contact</h1>
+    <form action="http://localhost:3000/api/contacts/" method="post">
+        <dl>
+          <dt>
+            <label for="full_name">Full name:</label>
+            <input type="text" name="full_name" id="full_name">
+          </dt>
+          <dt>
+            <label for="email">Email address:</label>
+            <input type="text" name="email" id="email">
+          </dt>
+          <dt>
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" name="phone_number" id="phone_number">
+          </dt>
+          <dt>
+            <label for="work">Tags:</label>
+            <input type="text" name="tags" id="tags" placeholder="tag1,tag2,tag3">
+          </dt>
+        </dl>
+        <button type="button" id="form-submit-button">Submit</button>
+        <button type="button" id="form-cancel-button">Cancel</button>
+    </form>
+  </section>
+  <script id="contact" data-type="partial" type="text/x-handlebars">
+    <div class="contact">
+      <h3 class="full_name">{{full_name}}</h3>
+      <p class="email">Email: {{email}}<p>
+      <p class="phone_number"> Phone: {{phone_number}}</p>
+      <p class="tags">{{tags}}</p>
+      <p class="id" hidden>{{id}}<p>
+      <button type="button" class="edit-button">Edit</button>
+      <button type="button" class="delete-button" style.display: inline-block>Delete</button>
+    </div>
+  </script>
+
+  <script id="contacts" type="text/x-handlebars">
+    {{#each contact}}
+      {{> contactPartial}}
+    {{/each}}
+  </script>
+</body>
+</html>
