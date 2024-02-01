@@ -7,38 +7,45 @@
     "tags": "work,friend"
   },
   {
-    "id": 2,
-    "full_name": "Victor Reyes",
-    "email": "vpr@example.com",
-    "phone_number": "09876543210",
-    "tags": "work,friend"
-  },
-  {
-    "id": 3,
-    "full_name": "Pete Hanson",
-    "email": "ph@example.com",
-    "phone_number": "54321098761",
-    "tags": null
-  },
-  {
-    "full_name": "test",
-    "phone_number": "123",
-    "email": "test@test.com",
-    "tags": "test",
-    "id": 4
-  },
-  {
-    "full_name": "newTest",
-    "phone_number": "123",
-    "email": "jim@jim.com",
-    "tags": "poop",
-    "id": 5
-  },
-  {
-    "full_name": "bob",
+    "full_name": "Mav",
     "phone_number": "123",
     "email": "bob@bob.com",
     "tags": "friend, personal, family",
-    "id": 6
+    "id": 8
+  },
+  {
+    "full_name": "Shaka",
+    "phone_number": "23",
+    "email": "test@test.com",
+    "tags": "woho, boom!",
+    "id": 10
+  },
+  {
+    "full_name": "Mavrick",
+    "phone_number": "123",
+    "email": "mav@mav",
+    "tags": "personal, work",
+    "id": 11
+  },
+  {
+    "full_name": "Jimmy",
+    "phone_number": "123",
+    "email": "jim@jim.com",
+    "tags": "test",
+    "id": 12
+  },
+  {
+    "full_name": "Jitters",
+    "phone_number": "142",
+    "email": "test@test.com",
+    "tags": "rest",
+    "id": 13
+  },
+  {
+    "full_name": "Goose",
+    "phone_number": "12344",
+    "email": "goose@gmai.com",
+    "tags": "tag1,2,3",
+    "id": 14
   }
 ]
